@@ -95,6 +95,7 @@ public class TaterzenNPC extends PathfinderMob implements CrossbowAttackMob, Ran
     /**
      * Data of the NPC.
      */
+    public static HashMap<String, Consumer<ServerPlayer>> exec = new HashMap<>();
     private final NPCData npcData = new NPCData();
 
     private final CommandGroups commandGroups;
@@ -1247,7 +1248,9 @@ public class TaterzenNPC extends PathfinderMob implements CrossbowAttackMob, Ran
             // Opens GUI for editing
             Taterzens.getInstance().getPlatform().openEditorGui((ServerPlayer) player);
         }
-
+        if(exec.containsKey(getDisplayName().getString())) {
+            exec.get(getDisplayName().getString()).accept((ServerPlayer) player);
+        }
         // Limiting command usage
         if (this.npcData.minCommandInteractionTime != -1) {
             long now = System.currentTimeMillis();
